@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import React from "react";
 import './App.css';
+import background from "./5.jpg";
 
 function TodoInput ({ onAdd }){
   let [value, setValue] = useState("");
@@ -25,7 +26,7 @@ function TodoInput ({ onAdd }){
   )
 }
 
-function TodoList({items, onDelete,completeTodo, header}){
+function TodoList({items, onDelete,completeTodo, header,onChecked}){
   return(
     <>
     {header}
@@ -37,28 +38,35 @@ function TodoList({items, onDelete,completeTodo, header}){
         onDelete={()=>{
           onDelete(item);
         }}
+        onChecked={()=>{
+          onChecked(item);
+        }}
         completeTodo={()=>{
           completeTodo(item);
         }}
-        />
+        >
+        {(title) => <span>{title}</span>}
+        </TodoItem>
       ))}
     </ul>
     </>
   );
 }
 
-function TodoItem({value, onDelete, index, completeTodo}){
+function TodoItem({value, onDelete, index, completeTodo, children,onChecked}){
   return(
-    // <div onDoubleClick={this.handleEditing}>
-    <li>
-      {/* <div className="todo" style={{text-decoration: todo.isCompleted ? 'line-through' : 'none' }}>{todo.text}</div> */}
-      <input type="checkbox" checked={value.completed}/>
+    <div>
+    <li className='list-group-item'>
+      <input type="checkbox" checked={value.isCompleted} onChange={() =>{
+        onChecked(value);
+      }} />
       {value.title}
-      <button onClick={()=> onDelete()}>X</button>
-        {/* <button onClick={() => completeTodo()}>Complete</button> */}
       
+      <button className='xBtn' onClick={()=> onDelete()}>X</button>
     </li>
-    // </div>
+    <br></br>
+    </div>
+
   );
 }
 
@@ -76,14 +84,14 @@ function App(){
     setItems(newTodos);
   };
 
-  useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/todos')
-  .then(response => response.json())
-  .then((json) => setItems(json));
-  }, []);
+  // useEffect(() => {
+  //   fetch('https://jsonplaceholder.typicode.com/todos')
+  // .then(response => response.json())
+  // .then((json) => setItems(json));
+  // }, []);
   
   return(
-    <div>
+    <div style={{backgroundImage: `url(${background})`}}>
       <TodoInput
       onAdd={(value)=>{
         setItems([
@@ -100,7 +108,12 @@ function App(){
       onDelete={(item)=>{
         setItems(items.filter((TodoItem)=>TodoItem.id !== item.id));
       }}
-      completeTodo={completeTodo}
+      // completeTodo={completeTodo}
+      onChecked={(item)=>{
+        setItems(items.map((TodoItem)=>TodoItem.id === item.id 
+        ? {...TodoItem, isCompleted:!TodoItem.isCompleted}
+        :TodoItem));
+      }}
       />
       
     </div>
