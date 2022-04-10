@@ -49,7 +49,7 @@ function TodoList({items, onDelete,completeTodo, header}){
 
 function TodoItem({value, onDelete, index, completeTodo}){
   return(
-    <div onDoubleClick={this.handleEditing}>
+    // <div onDoubleClick={this.handleEditing}>
     <li>
       {/* <div className="todo" style={{text-decoration: todo.isCompleted ? 'line-through' : 'none' }}>{todo.text}</div> */}
       <input type="checkbox" checked={value.completed}/>
@@ -58,7 +58,7 @@ function TodoItem({value, onDelete, index, completeTodo}){
         {/* <button onClick={() => completeTodo()}>Complete</button> */}
       
     </li>
-    </div>
+    // </div>
   );
 }
 
@@ -76,11 +76,11 @@ function App(){
     setItems(newTodos);
   };
 
-  // useEffect(() => {
-  //   fetch('https://jsonplaceholder.typicode.com/todos')
-  // .then(response => response.json())
-  // .then((json) => setItems(json));
-  // }, []);
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/todos')
+  .then(response => response.json())
+  .then((json) => setItems(json));
+  }, []);
   
   return(
     <div>
