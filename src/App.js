@@ -131,11 +131,11 @@ function App() {
   //   setItems(newTodos);
   // };
 
-  // useEffect(() => {
-  //   fetch("https://jsonplaceholder.typicode.com/todos")
-  //     .then((response) => response.json())
-  //     .then((json) => setItems(json));
-  // }, []);
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/todos")
+      .then((response) => response.json())
+      .then((json) => setItems(json));
+  }, []);
 
   return (
     <div style={{ backgroundImage: `url(${background})` }}>
